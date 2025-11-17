@@ -531,8 +531,9 @@ function parseDate(dateString) {
 function loadCSV() {
   // Coba ke berbagai endpoint dengan fallback yang cerdas
   const endpoints = [
-    '/getSheet',                      // Relatif path (cocok untuk dev server & netlify)
-    '/.netlify/functions/getSheet',   // Netlify Functions (production)
+    '/api/getSheet',                  // Vercel Serverless Function
+    '/getSheet',                      // Fallback untuk dev server lokal
+    '/.netlify/functions/getSheet',   // Fallback untuk Netlify
   ];
 
   async function tryFetch(url) {
