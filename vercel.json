@@ -1,16 +1,10 @@
 {
+  "buildCommand": "echo 'No build needed'",
+  "outputDirectory": ".",
   "rewrites": [
     {
-      "source": "/",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/index",
+      "source": "/(.*)",
       "destination": "/index.html"
     }
-  ],
-  "env": {
-    "API_KEY": "@api_key",
-    "SHEET_ID": "@sheet_id"
-  }
+  ]
 }

@@ -1,0 +1,12 @@
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200
+
+[build]
+command = "echo 'No build needed'"
+publish = "."
+
+[context.production.environment]
+API_KEY = "placeholder"
+SHEET_ID = "placeholder"
