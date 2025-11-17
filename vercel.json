@@ -1,0 +1,16 @@
+{
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/index",
+      "destination": "/index.html"
+    }
+  ],
+  "env": {
+    "API_KEY": "@api_key",
+    "SHEET_ID": "@sheet_id"
+  }
+}

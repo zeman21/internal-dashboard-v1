@@ -20,19 +20,28 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  // Get environment variables
-  const API_KEY = process.env.API_KEY;
-  const SHEET_ID = process.env.SHEET_ID;
+  // Get environment variables with trim to remove whitespace
+  const API_KEY = process.env.API_KEY ? process.env.API_KEY.trim() : '';
+  const SHEET_ID = process.env.SHEET_ID ? process.env.SHEET_ID.trim() : '';
 
   if (!API_KEY || !SHEET_ID) {
+    console.error('Missing env vars:', { 
+      hasApiKey: !!process.env.API_KEY, 
+      hasSheetId: !!process.env.SHEET_ID 
+    });
     return res.status(500).json({
       error: 'Missing environment variables',
-      message: 'Pastikan API_KEY dan SHEET_ID sudah di-set di environment variables Vercel'
+      message: 'Pastikan API_KEY dan SHEET_ID sudah di-set di environment variables Vercel',
+      debug: {
+        hasApiKey: !!process.env.API_KEY,
+        hasSheetId: !!process.env.SHEET_ID
+      }
     });
   }
 
   try {
     console.log(`[${new Date().toISOString()}] Fetching data dari Google Sheets...`);
+    console.log(`[${new Date().toISOString()}] API_KEY length: ${API_KEY.length}, SHEET_ID length: ${SHEET_ID.length}`);
 
     const RANGE = "Sheet1!A:AY";
     const sheetUrl = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
