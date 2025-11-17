@@ -1,0 +1,1441 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>CoE Securing 2025 – Dashboard</title>
+  <link rel="icon" type="image/png" href="https://cdn-icons-png.freepik.com/256/16597/16597579.png?semt=ais_white_label">
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial} .glass{background:linear-gradient(135deg, rgba(255,255,255,0.6), rgba(255,255,255,0.45));backdrop-filter: blur(6px);-webkit-backdrop-filter: blur(6px);} .card-shadow{box-shadow:0 6px 20px rgba(16,24,40,0.08);} .numeric {font-variant-numeric:tabular-nums;}</style>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" />
+  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
+  <meta name="color-scheme" content="light">
+</head>
+<body>
+
+<div id="loginPage">
+  <div class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md">
+    <div class="text-center mb-8">
+      <img class="h-16 w-auto mx-auto mb-4" src="https://cdn-icons-png.freepik.com/256/16597/16597579.png" alt="CoE Logo">
+      <h1 class="text-2xl font-bold text-gray-800">CoE Securing 2025</h1>
+      <p class="text-sm text-gray-500 mt-2">Silakan login untuk melanjutkan</p>
+    </div>
+    
+    <form id="loginForm" class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Username</label>
+        <input type="text" id="username" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Masukkan username" required>
+      </div>
+      
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+        <input type="password" id="password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Masukkan password" required>
+      </div>
+
+      <div id="loginError" class="hidden text-red-500 text-sm text-center p-2 bg-red-50 rounded">
+        Username atau password salah!
+      </div>
+      
+      <button type="submit" class="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 rounded-lg font-semibold hover:shadow-lg transition-all">
+        Login
+      </button>
+    </form>
+
+    <div class="mt-6 text-center text-xs text-gray-400">
+      Kamu bisa menghubungi ke <strong>COE</strong>
+    </div>
+  </div>
+</div>
+
+<div id="dashboardPage">
+  <nav class="sticky top-0 z-50 mb-6 glass card-shadow rounded-xl">
+    <div class="max-w-[1400px] mx-auto px-4">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center space-x-2">
+          <img class="h-8 w-auto" src="https://cdn-icons-png.freepik.com/256/16597/16597579.png" alt="CoE Logo">
+          <span class="text-xl font-bold text-slate-800">CoE Securing 2025</span>
+        </div>
+        <div class="flex items-center space-x-3">
+          <a href="https://dashboard-coe.netlify.app/" class="px-4 py-2 text-sm font-semibold text-white bg-slate-800 rounded-md hover:bg-slate-700 transition-colors">
+            Dashboard
+          </a>
+          <!-- <a href="https://in-funnel-dashboard.netlify.app/" class="px-4 py-2 text-sm font-semibold text-slate-700 bg-white border border-slate-300 rounded-md hover:bg-slate-50 transition-colors">
+            In. Funnel
+          </a>
+          <a href="https://pipeline-status-demo.netlify.app/" class="px-4 py-2 text-sm font-semibold text-slate-700 bg-white border border-slate-300 rounded-md hover:bg-slate-50 transition-colors">
+            Pipeline Demo
+          </a>
+          <a href="https://summary-report-coe-dashboard.netlify.app/" class="px-4 py-2 text-sm font-semibold text-slate-700 bg-white border border-slate-300 rounded-md hover:bg-slate-50 transition-colors">
+            Summary Report
+          </a>
+          <a href="https://list-materi-coe.netlify.app/" class="px-4 py-2 text-sm font-semibold text-slate-700 bg-white border border-slate-300 rounded-md hover:bg-slate-50 transition-colors">
+            Doc. Design
+          </a> -->
+          <button id="logoutBtn" class="px-4 py-2 text-sm font-semibold text-white bg-red-500 rounded-md hover:bg-red-600 transition-colors">
+            Logout
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="bg-gradient-to-b from-slate-50 to-white min-h-screen p-6">
+    <div class="max-w-[1400px] mx-auto">
+      <header class="flex items-center justify-between mb-6">
+        <div>
+          <h1 class="text-3xl font-extrabold tracking-tight">COE Securing 2025</h1>
+          <p class="mt-1 text-sm text-slate-500">Dashboard interaktif – Departemen CoE</p>
+        </div>
+
+        <div class="flex gap-3 items-center flex-wrap">
+          <div class="text-sm text-slate-600 font-semibold">Filters:</div>
+          
+          <div class="filter-dropdown">
+            <button class="filter-button" id="btnFunnel">
+              <span>Funnel</span>
+              <span class="filter-badge" id="badgeFunnel">0</span>
+              <span>▼</span>
+            </button>
+            <div class="filter-content" id="filterFunnel"></div>
+          </div>
+
+          <div class="filter-dropdown">
+            <button class="filter-button" id="btnSegmentSales">
+              <span>Segment Sales</span>
+              <span class="filter-badge" id="badgeSegmentSales">0</span>
+              <span>▼</span>
+            </button>
+            <div class="filter-content" id="filterSegmentSales"></div>
+          </div>
+
+          <div class="filter-dropdown">
+            <button class="filter-button" id="btnAM">
+              <span>Nama AM</span>
+              <span class="filter-badge" id="badgeAM">0</span>
+              <span>▼</span>
+            </button>
+            <div class="filter-content" id="filterAM"></div>
+          </div>
+
+          <div class="filter-dropdown">
+            <button class="filter-button" id="btnScanning">
+              <span>3A Scanning</span>
+              <span class="filter-badge" id="badgeScanning">0</span>
+              <span>▼</span>
+            </button>
+            <div class="filter-content" id="filterScanning"></div>
+          </div>
+
+          <div class="filter-dropdown">
+            <button class="filter-button" id="btnPIC">
+              <span>PIC COE</span>
+              <span class="filter-badge" id="badgePIC">0</span>
+              <span>▼</span>
+            </button>
+            <div class="filter-content" id="filterPIC"></div>
+          </div>
+
+          <button id="resetBtn" class="px-4 py-2 rounded-md bg-slate-800 text-white text-sm font-semibold hover:bg-slate-700">
+            Reset All
+          </button>
+        </div>
+      </header>
+
+      <section class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div class="p-5 rounded-2xl card-shadow glass">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="text-sm text-slate-500">Total Projects</div>
+              <div id="kpiProjects" class="mt-1 text-2xl font-bold numeric">—</div>
+            </div>
+            <div class="text-green-600 font-semibold text-sm">▲ Ongoing</div>
+          </div>
+        </div>
+
+        <div class="p-5 rounded-2xl card-shadow glass">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="text-sm text-slate-500">Total Nilai Kontrak</div>
+              <div id="kpiNilai" class="mt-1 text-2xl font-bold numeric">—</div>
+            </div>
+            <div class="text-slate-400 text-xs">(IDR)</div>
+          </div>
+        </div>
+
+        <div class="p-5 rounded-2xl card-shadow glass">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="text-sm text-slate-500">Total Scaling 2025</div>
+              <div id="kpiScaling" class="mt-1 text-2xl font-bold numeric">—</div>
+            </div>
+            <div class="text-slate-400 text-xs">(IDR)</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div class="p-5 rounded-2xl card-shadow glass">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="text-sm text-slate-500">Potensi Revenue 3A</div>
+              <div id="kpiRev3A" class="mt-1 text-2xl font-bold numeric">—</div>
+            </div>
+            <div class="text-slate-400 text-xs">(IDR)</div>
+          </div>
+        </div>
+      
+        <div class="p-5 rounded-2xl card-shadow glass">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="text-sm text-slate-500">Potensi Revenue Project</div>
+              <div id="kpiRevProject" class="mt-1 text-2xl font-bold numeric">—</div>
+            </div>
+            <div class="text-slate-400 text-xs">(IDR)</div>
+          </div>
+        </div>
+      
+        <div class="p-5 rounded-2xl card-shadow glass">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="text-sm text-slate-500">Sisa 2026</div>
+              <div id="kpiSisa2026" class="mt-1 text-2xl font-bold numeric">—</div>
+            </div>
+            <div class="text-slate-400 text-xs">(IDR)</div>
+          </div>
+        </div>
+      </section>
+      
+      <section class="mb-6 rounded-xl p-4 bg-white card-shadow">
+          <div class="flex items-center justify-between mb-4">
+              <h2 class="text-xl font-bold text-slate-800">Funnel Board</h2>
+              <div class="flex items-center space-x-2">
+                  <span class="text-sm font-medium text-slate-600">Sort Potensi Revenue:</span>
+                  <select id="sortRevenue" class="px-2 py-1 border rounded-md text-sm cursor-pointer">
+                      <option value="none">None (Urutkan Berdasarkan Last Update)</option>
+                      <option value="descending">Descending (Potensi Revenue Tertinggi)</option>
+                      <option value="ascending">Ascending (Potensi Revenue Terendah)</option>
+                  </select>
+              </div>
+          </div>
+
+          <div id="funnelBoardContainer">
+              <div class="text-slate-500 p-8 text-center w-full">Sabar yaa, datanya lagi di masak dulu...</div>
+          </div>
+      </section>
+
+      <section class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <div class="col-span-1 lg:col-span-1 p-4 rounded-1xl card-shadow bg-white">
+          <h3 class="text-sm font-semibold mb-3">Performance project berdasarkan 3A Scanning</h3>
+          <canvas id="chartScanning" height="260"></canvas>
+        </div>
+        <div class="p-4 rounded-2xl card-shadow bg-white">
+          <h3 class="text-sm font-semibold mb-3">Sub Services</h3>
+          <canvas id="chartSubServices" height="220"></canvas>
+        </div>
+        <div class="p-4 rounded-2xl card-shadow bg-white">
+          <h3 class="text-sm font-semibold mb-3">PIC COE</h3>
+          <canvas id="chartPIC" height="220"></canvas>
+        </div>
+      </section>
+
+      <section class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <div class="p-4 rounded-2xl card-shadow bg-white">
+          <h3 class="text-sm font-semibold mb-3">3A Services</h3>
+          <canvas id="chartServices" height="180"></canvas>
+        </div>
+        <div class="col-span-1 lg:col-span-1 p-4 rounded-2xl card-shadow bg-white">
+          <h3 class="text-sm font-semibold mb-3">Scaling 2025 vs Nilai Kontrak (per Funnel)</h3>
+          <canvas id="chartScalingFunnel" height="180"></canvas>
+        </div>
+      </section>
+
+      <section class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <div class="col-span-1 lg:col-span-1 p-4 rounded-2xl card-shadow bg-white">
+          <h3 class="text-sm font-semibold mb-3">Performance project berdasarkan Funnel</h3>
+          <canvas id="chartFunnel" height="260"></canvas>
+        </div>
+
+        <div class="p-4 rounded-2xl card-shadow bg-white">
+          <h3 class="text-sm font-semibold mb-3">Detail Nama Layanan per Stage</h3>
+          <div id="funnelServiceList" class="stage-table-wrapper p-2 mt-2 bg-white">
+            <table class="stage-table" id="stageCombinedTable">
+              <thead>
+                <tr>
+                  <th style="width:12%;">Stage</th>
+                  <th style="width:40%;">Nama Project</th>
+                  <th style="width:24%;">3A Services</th>
+                  <th style="width:24%;">Sub Services</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td colspan="4" class="text-slate-400 p-4">Memuat...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid grid-cols-1 lg:grid-cols-1 gap-6 mb-8">
+        <div class="p-4 rounded-2xl card-shadow bg-white lg:col-span-2">
+          <h3 class="text-sm font-semibold mb-3">Performance CoE – jumlah project, nilai kontrak, potensi revenue 3A</h3>
+          <canvas id="chartAM" height="240"></canvas>
+        </div>
+      </section>
+
+      <section class="p-4 rounded-2xl card-shadow bg-white mb-8">
+        <h3 class="text-sm font-semibold mb-3">Industry & Segment Portofolio</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <h4 class="text-xs font-semibold text-slate-500 mb-2">3A Industry</h4>
+            <canvas id="chartIndustry" height="140"></canvas>
+          </div>
+          <div>
+            <h4 class="text-xs font-semibold text-slate-500 mb-2">Segment Sales</h4>
+            <canvas id="chartIndustrySales" height="140"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <section class="p-4 rounded-2xl card-shadow bg-white">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h3 class="text-lg font-semibold">Rekapitulasi Project</h3>
+            <p class="text-sm text-slate-500">Klik header untuk sorting. Gunakan filters di atas untuk menyaring data.</p>
+          </div>
+          <div class="text-sm text-slate-400">Source: Google Spreadsheet</div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table id="dataTable" class="stripe hover" style="width:100%">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Nama Project</th>
+                <th>Customer</th>
+                <th>Segment Sales</th>
+                <th>Nama AM</th>
+                <th>Funnel Project</th>
+                <th>3A Scanning</th>
+                <th>Nilai Kontrak</th>
+                <th>Pros. Revenue 3A</th>
+                <th>Industry</th>
+                <th>PIC COE</th>
+                <th>Keterangan</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <button class="chat-widget-toggle-btn" id="chat-toggle-btn">
+        <span id="chat-icon">AI</span>
+      </button>
+
+      <div class="chat-widget-container" id="chat-widget">
+        <div class="chat-widget-header" id="chat-header">
+          <h3>Chat CoE With AI</h3>
+          <span style="font-size: 1.5em; cursor: pointer;">&times;</span>
+        </div>
+        <iframe class="chat-widget-iframe" src="https://ai-ragflow.threea.cloud/chat/share?shared_id=911c03d093c111f0b7049ad260d4b041&from=chat&auth=dmOGJjYzM0MmIwNDExZjA4NGIxNjZmYz&visible_avatar=1" frameborder="0"></iframe>
+      </div>
+
+      <footer class="mt-6 text-center text-sm text-slate-500">Center of Excellent: Securing 2025 • Dashboard</footer>
+    </div>
+  </div>
+</div>
+
+<div id="globalCardTooltip" class="card-tooltip"></div> 
+<div id="loading-overlay">
+  <div class="text-center">
+    <div id="loading-animation-container" class="mx-auto mb-3 w-20 h-20">
+      </div>
+    <p id="loading-message" class="text-lg font-semibold text-slate-700">Memuat...</p>
+  </div>
+</div>
+<script>
+
+// =================================================================
+// 🚨 PENTING: GANTI URL DI BAWAH INI DENGAN URL GIF PILIHAN ANDA
+// =================================================================
+const LOGIN_GIF_URL = 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExMjdsOWh1NmNqdDhtaXBkNmoxaHQyaW50cnNjaXB4YWw3d2llcnhuZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/psfjpMeC1cEPmYQbs4/giphy.gif';
+// https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExY2ttMzVnYmZyMHBhanUxcWo2MWRnaXpnbGduZzNzMHhmYTBzYXk3MyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/zTYIcJPjKXuPQt3e3n/giphy.gif
+// 👈 URL GIF untuk Login: "Welcome to 3A Fighters, Cheer up"
+const LOGOUT_GIF_URL = 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExbmphY3hrdnU5bWM0MHo1dXpyN2tncG1jY3RseGxuYjczNjJ6dnJ6ciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/1Q6K09gcxYWcUxxraT/giphy.gif'; // 👈 URL GIF untuk Logout: "Have you seen the achievements? Good luck!"
+const DEFAULT_GIF_FALLBACK = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvczdnIj4KPHBhdGggZD0iTTEyIDJWMjJNMiAxMkg3LjY4Mk0yMiAxMkgxNi4zMThNMTggNkgyMi4yODciIHN0cm9rZT0iIzM0NTVhMSIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PC9wYXRoPgo8cGF0aCBkPSJNMTggNlMyMCAyIDIyLjI4NyAyTTQgNkgwTTYgMTdDMiAxNyAwIDIxLjE3NyAwIDIxLjE3NyIgc3Ryb2tlPSIjMWEyZjVkIiBzdHJva2Utd2lkdGg9IjEuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj48L3BhdGg+Cjwvc3ZnPg=='; // Fallback jika URL GIF kosong
+
+// --- Updated Helper Functions for Loading Animation ---
+function showLoading(message, type) {
+  const loadingOverlay = document.getElementById('loading-overlay');
+  const messageElement = document.getElementById('loading-message');
+  const animationContainer = document.getElementById('loading-animation-container');
+  
+  // 1. Set Message
+  messageElement.textContent = message;
+  
+  // 2. Set Animation (GIF)
+  let gifUrl = DEFAULT_GIF_FALLBACK;
+  if (type === 'login' && LOGIN_GIF_URL.startsWith('http')) {
+    gifUrl = LOGIN_GIF_URL;
+  } else if (type === 'logout' && LOGOUT_GIF_URL.startsWith('http')) {
+    gifUrl = LOGOUT_GIF_URL;
+  }
+
+  // Masukkan tag img ke dalam container
+  animationContainer.innerHTML = `<img 
+  src="${gifUrl}" 
+  alt="${type} animation" 
+  class="w-full max-w-[500px] h-auto object-contain rounded-lg mx-auto"
+/>`;
+
+  // 3. Show Overlay
+  loadingOverlay.classList.add('visible');
+}
+
+function hideLoading() {
+  document.getElementById('loading-overlay').classList.remove('visible');
+  // Kosongkan container animasi setelah tersembunyi
+  document.getElementById('loading-animation-container').innerHTML = '';
+}
+// --------------------------------------------------
+
+// LOGIN SYSTEM
+const LOGIN_CREDENTIALS = { username: 'admin', password: 'admincoe2025' };
+
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+  const errorDiv = document.getElementById('loginError');
+  
+  if (username === LOGIN_CREDENTIALS.username && password === LOGIN_CREDENTIALS.password) {
+    // 1. Tampilkan animasi loading dengan pesan & tipe "login"
+    showLoading('Welcome to 3A Fighters, Cheer up', 'login'); // <-- PESAN LOGIN KUSTOM
+    
+    // 2. Tunda aksi login agar animasi terlihat
+    setTimeout(() => {
+      // SUCCESSFUL LOGIN
+      document.getElementById('loginPage').style.display = 'none';
+      document.getElementById('dashboardPage').style.display = 'block';
+      sessionStorage.setItem('isLoggedIn', 'true');
+      init();
+      // 3. Sembunyikan animasi loading
+      hideLoading(); 
+    }, 4000); // Tunda 1 detik
+    
+  } else {
+    errorDiv.classList.remove('hidden');
+    setTimeout(() => errorDiv.classList.add('hidden'), 3000);
+  }
+});
+
+document.getElementById('logoutBtn').addEventListener('click', function() {
+  // 1. Tampilkan animasi loading dengan pesan & tipe "logout"
+  showLoading('Have you seen the achievements? Good luck!', 'logout'); // <-- PESAN LOGOUT KUSTOM
+  
+  // 2. Tunda aksi logout agar animasi terlihat
+  setTimeout(() => {
+    // LOGOUT ACTIONS
+    sessionStorage.removeItem('isLoggedIn');
+    document.getElementById('loginPage').style.display = 'flex';
+    document.getElementById('dashboardPage').style.display = 'none';
+    document.getElementById('username').value = '';
+    document.getElementById('password').value = '';
+    // 3. Sembunyikan animasi loading
+    hideLoading(); 
+  }, 4000); // Tunda 0.8 detik
+});
+
+if (sessionStorage.getItem('isLoggedIn') === 'true') {
+  document.getElementById('loginPage').style.display = 'none';
+  document.getElementById('dashboardPage').style.display = 'block';
+} else {
+  // Pastikan overlay tersembunyi saat halaman dimuat ke halaman login
+  hideLoading();
+}
+
+// CHAT WIDGET
+const chatWidget = document.getElementById('chat-widget');
+const chatToggleBtn = document.getElementById('chat-toggle-btn');
+const chatHeader = document.getElementById('chat-header');
+const chatIcon = document.getElementById('chat-icon');
+let isOpen = false;
+
+function toggleChat() {
+  isOpen = !isOpen;
+  chatWidget.classList.toggle('active');
+  chatToggleBtn.classList.toggle('active');
+  chatIcon.textContent = isOpen ? '×' : 'AI';
+}
+
+chatToggleBtn.addEventListener('click', toggleChat);
+chatHeader.addEventListener('click', toggleChat);
+
+
+let rawData = [];
+let parsed = [];
+let dataTableInstance = null;
+let charts = {};
+let selectedFilters = { funnel: [], segmentSales: [], am: [], scanning: [], pic: [] };
+
+const ALLOWED_SERVICES = ['CC AI','DOC AI','Proctoring','RPA','Analytics','Recruitment AI','Custom Solution AI'];
+
+function fmtIDR(v){
+  if (v === null || v === undefined || isNaN(v)) return '-';
+  return 'Rp ' + Number(v).toLocaleString('id-ID', {maximumFractionDigits:0});
+}
+
+function toNum(val){
+  if (val === undefined || val === null) return 0;
+  let str = String(val).trim();
+  if (str === '') return 0;
+  str = str.replace(/[^\d.-]/g,'');
+  const num = parseFloat(str);
+  return isNaN(num) ? 0 : num;
+}
+
+/* NEW: Date Parsing for 'Last Update' */
+function parseDate(dateString) {
+  if (!isValidValue(dateString)) return null;
+  // Expected format: MM/DD/YYYY or D/M/YYYY
+  // JS Date.parse struggles with DD/MM/YYYY without forcing, e.g. '11/11/2025'
+  const parts = String(dateString).trim().split('/');
+  if (parts.length === 3) {
+    // Assume DD/MM/YYYY for robustness with European/Indonesian style dates often found in spreadsheets
+    const day = parseInt(parts[0], 10);
+    const month = parseInt(parts[1], 10);
+    const year = parseInt(parts[2], 10);
+    if (!isNaN(day) && !isNaN(month) && !isNaN(year) && month >= 1 && month <= 12) {
+      // Use UTC to avoid timezone issues when comparing, which ensures date sorting is consistent
+      const date = new Date(Date.UTC(year, month - 1, day));
+      if (!isNaN(date) && date.getUTCFullYear() === year) return date; // Simple validation check
+    }
+  }
+  // Fallback for default JS parsing if the date is not in DD/MM/YYYY
+  const d = new Date(dateString);
+  return isNaN(d.getTime()) ? null : d;
+}
+/* END NEW: Date Parsing */
+
+
+function loadCSV() {
+  // Coba ke berbagai endpoint dengan fallback yang cerdas
+  const endpoints = [
+    '/getSheet',                      // Relatif path (cocok untuk dev server & netlify)
+    '/.netlify/functions/getSheet',   // Netlify Functions (production)
+  ];
+
+  async function tryFetch(url) {
+    try {
+      console.log(`📡 Mencoba fetch dari: ${url}`);
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const data = await response.json();
+      console.log(`✅ Berhasil fetch dari ${url}`);
+      return data;
+    } catch (err) {
+      console.warn(`❌ Gagal dari ${url}:`, err.message);
+      throw err;
+    }
+  }
+
+  // Coba setiap endpoint sampai berhasil
+  return (async () => {
+    let lastError = null;
+    for (const url of endpoints) {
+      try {
+        return await tryFetch(url);
+      } catch (err) {
+        lastError = err;
+      }
+    }
+    // Jika semua gagal
+    console.error('❌ Semua endpoint gagal:', lastError);
+    throw new Error(
+      'Tidak dapat memuat data dari getSheet.\n' +
+      '📝 Dev Mode: Jalankan "npm start" atau "PORT=5501 npm start"\n' +
+      '🔑 Pastikan API_KEY dan SHEET_ID sudah di-set di .env'
+    );
+  })();
+}
+
+function normalizeData(rows){
+  return rows.map((r, idx) => {
+    const norm = {}; 
+    Object.keys(r).forEach(k => {
+      const clean = String(k).trim().toLowerCase().replace(/_/g,' ').replace(/\s+/g,' ').trim();
+      norm[clean] = r[k];
+    });
+
+    const pick = (...keys) => {
+      for(const k of keys){
+        if (k in r && r[k] !== undefined && r[k] !== null && String(r[k]).trim() !== '') return r[k];
+        const lk = String(k).trim().toLowerCase().replace(/_/g,' ').replace(/\s+/g,' ').trim();
+        if (lk in norm && norm[lk] !== undefined && norm[lk] !== null && String(norm[lk]).trim() !== '') return norm[lk];
+      }
+      return '';
+    };
+
+    return {
+      No: pick('No') || (idx+1),
+      NamaProject: pick('Nama Project','nama project','nama_project'),
+      Customer: pick('Customer','customer'),
+      SegmentSales: pick('Segment Sales','segment sales'),
+      NamaAM: pick('Nama AM','nama am','nama_am'),
+      Funnel: pick('Funnel','funnel'),
+      NilaiKontrak: toNum(pick('Nilai Kontrak','nilai kontrak','nilai_kontrak')),
+      Scaling2025: toNum(pick('Scaling 2025','scaling 2025','scaling_2025')),
+      Sisa2026: toNum(pick('Sisa 2026','sisa 2026')),
+      Scanning3A: pick('3A Scanning','3a scanning','3a_scanning'),
+      Funnel3A: pick('Funnel 3A','funnel 3a'),
+      Services: pick('3A Services','3a services','3a_services'),
+      SubServices: pick('Sub Services','sub services','sub_services'),
+      PotensiRevenueProject: toNum(pick('Potensi Revenue Project','potensi revenue project')),
+      PotensiRevenue3A: toNum(pick('Potensi Revenue 3A','potensi revenue 3a')),
+      PIC: pick('PIC COE','pic coe','pic_coe','pic'),
+      Industry: pick('Industry','industry'),
+      Portofolio: pick('Portofolio','portofolio'),
+      KeteranganTambahan: pick('Keterangan Tambahan','Keterangan tambahan'),
+      LastUpdate: parseDate(pick('Last Update','LastUpdate','last_update')), // NEW FIELD
+      // NEW: Milestone Fields for Tooltip
+      BAK: pick('BAK', 'bak'),
+      Kickoff: pick('Kickoff', 'kickoff'),
+      BRD: pick('BRD', 'brd'),
+      PDD: pick('PDD', 'pdd'),
+      Development: pick('Development', 'development'),
+      Live: pick('Live', 'live'),
+      raw: r
+    };
+  });
+}
+
+function isValidValue(v){
+  if (v === undefined || v === null) return false;
+  const s = String(v).trim();
+  if (s === '') return false;
+  const low = s.toLowerCase();
+  if (low === 'unknown' || low === 'n/a' || low === 'na') return false;
+  return true;
+}
+
+function groupBy(arr, keyFn){
+  return arr.reduce((acc, item) => {
+    const k = keyFn(item);
+    if (!acc[k]) acc[k] = [];
+    acc[k].push(item);
+    return acc;
+  }, {});
+}
+
+function groupByFiltered(arr, keyFn){
+  // only include items with valid key value
+  return arr.reduce((acc, item) => {
+    const kRaw = keyFn(item);
+    if (!isValidValue(kRaw)) return acc;
+    const k = String(kRaw).trim();
+    if (!acc[k]) acc[k] = [];
+    acc[k].push(item);
+    return acc;
+  }, {});
+}
+
+function sum(arr, field){
+  return arr.reduce((s, it) => s + (toNum(it[field])||0), 0);
+}
+
+function renderKPIs(data){
+  const totalProjects = data.length;
+  const totalNilai = data.reduce((s,d)=>s + (d.NilaiKontrak||0),0);
+  const totalScaling = data.reduce((s,d)=>s + (d.Scaling2025||0),0);
+  const totalRev3A = data.reduce((s,d)=>s + (d.PotensiRevenue3A||0),0);
+  const totalRevProject = data.reduce((s,d)=>s + (d.PotensiRevenueProject||0),0);
+  const totalSisa2026 = data.reduce((s,d)=>s + (d.Sisa2026||0),0);
+
+  document.getElementById('kpiProjects').innerText = totalProjects;
+  document.getElementById('kpiNilai').innerText = fmtIDR(totalNilai);
+  document.getElementById('kpiScaling').innerText = fmtIDR(totalScaling);
+  document.getElementById('kpiRev3A').innerText = fmtIDR(totalRev3A);
+  document.getElementById('kpiRevProject').innerText = fmtIDR(totalRevProject);
+  document.getElementById('kpiSisa2026').innerText = fmtIDR(totalSisa2026);
+}
+
+function renderTable(data){
+  // Rekapitulasi Project table - include PIC COE column
+  const rows = data.map((d, i) => ([
+    d.No || (i+1),
+    d.NamaProject,
+    d.Customer,
+    d.SegmentSales,
+    d.NamaAM,
+    d.Funnel,
+    d.Scanning3A,
+    d.NilaiKontrak,
+    d.PotensiRevenue3A,
+    d.Industry,
+    d.PIC,
+    d.KeteranganTambahan
+  ]));
+
+  if (dataTableInstance){
+    dataTableInstance.clear();
+    dataTableInstance.rows.add(rows);
+    dataTableInstance.draw();
+  } else {
+    dataTableInstance = $('#dataTable').DataTable({
+      data: rows,
+      columns: [
+        { title: 'No' }, { title: 'Nama Project' }, { title: 'Customer' }, { title: 'Segment Sales' },
+        { title: 'Nama AM' }, { title: 'Funnel Project' }, { title: '3A Scanning' },
+        { title: 'Nilai Kontrak', render: function(data){ return fmtIDR(data);} },
+        { title: 'Pros. Revenue 3A', render: function(data){ return fmtIDR(data);} },
+        { title: 'Industry' }, { title: 'PIC COE' }, { title: 'Keterangan Tambahan' }
+      ],
+      pageLength: 10
+    });
+  }
+}
+
+function destroyChart(id){ if (charts[id]) charts[id].destroy(); }
+
+function renderCharts(data){
+  renderKPIs(data);
+
+  // Funnel: exclude invalid/unknown
+  const funnelGroups = groupByFiltered(data, d => d.Funnel);
+  const funnelLabels = Object.keys(funnelGroups);
+  const funnelCounts = funnelLabels.map(l=>funnelGroups[l].length);
+
+  destroyChart('chartFunnel');
+  charts.chartFunnel = new Chart(document.getElementById('chartFunnel'), {
+    type: 'bar',
+    data: { labels: funnelLabels, datasets: [{ label: 'Jumlah Project', data: funnelCounts }] },
+    options: { responsive:true, plugins:{legend:{display:false},datalabels:{display:true}}, scales:{y:{beginAtZero:true}} }
+  });
+
+  // Scaling vs Nilai by funnel
+  const nilaiByFunnel = funnelLabels.map(l => sum(funnelGroups[l],'NilaiKontrak'));
+  const scalingByFunnel = funnelLabels.map(l => sum(funnelGroups[l],'Scaling2025'));
+
+  destroyChart('chartScalingFunnel');
+  charts.chartScalingFunnel = new Chart(document.getElementById('chartScalingFunnel'), {
+    type: 'bar',
+    data: {
+      labels: funnelLabels,
+      datasets: [
+        { label: 'Nilai Kontrak', data: nilaiByFunnel, stack: 'stack1' },
+        { label: 'Scaling 2025', data: scalingByFunnel, stack: 'stack1' }
+      ]
+    },
+    options:{ plugins:{legend:{position:'bottom'}}, responsive:true, scales:{y:{beginAtZero:true, ticks:{callback: v=>abbrevIDR(v)}}} }
+  });
+
+  // SubServices - exclude invalid
+  const subGroups = groupByFiltered(data, d => d.SubServices);
+  const subLabels = Object.keys(subGroups);
+  const subCounts = subLabels.map(l=>subGroups[l].length);
+  const subTotal = subCounts.reduce((a,b)=>a+b, 0);
+
+  destroyChart('chartSubServices');
+  charts.chartSubServices = new Chart(document.getElementById('chartSubServices'), {
+    type: 'doughnut',
+    data: { labels: subLabels, datasets: [{ data: subCounts, backgroundColor: generatePalette(subLabels.length) }] },
+    options: { 
+      plugins:{
+        legend:{position:'bottom'},
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              const label = context.label || '';
+              const value = context.parsed || 0;
+              const percentage = subTotal > 0 ? ((value / subTotal) * 100).toFixed(1) : 0;
+              return label + ': ' + value + ' (' + percentage + '%)';
+            }
+          }
+        },
+        datalabels: {
+          formatter: (value) => {
+            const percentage = subTotal > 0 ? ((value / subTotal) * 100).toFixed(1) : 0;
+            return percentage + '%';
+          },
+          color: '#fff', font: { weight: 'bold', size: 12 }
+        }
+      }, 
+      onClick: (evt, elems) => handleDonutClick(evt, elems, 'SubServices') 
+    },
+    plugins: [ChartDataLabels]
+  });
+
+  // Services - only allowed list and exclude invalid
+  const servicesFiltered = data.filter(d => {
+    if (!isValidValue(d.Services)) return false;
+    const s = String(d.Services).trim();
+    // sometimes multiple services may appear separated by comma; aim to count if any allowed present
+    // We'll map each project to first matching allowed service for simplicity in charting
+    return ALLOWED_SERVICES.some(a => s.toLowerCase().includes(a.toLowerCase()));
+  }).map(d => {
+    const s = String(d.Services).trim();
+    // find first allowed that matches
+    for (let a of ALLOWED_SERVICES){
+      if (s.toLowerCase().includes(a.toLowerCase())) return Object.assign({}, d, { _serviceKey: a });
+    }
+    return Object.assign({}, d, { _serviceKey: s });
+  });
+
+  const servicesGroups = groupBy(servicesFiltered, d => d._serviceKey);
+  const servicesLabels = Object.keys(servicesGroups);
+  const servicesCounts = servicesLabels.map(l=>servicesGroups[l].length);
+  const servicesTotal = servicesCounts.reduce((a,b)=>a+b, 0);
+
+  destroyChart('chartServices');
+  charts.chartServices = new Chart(document.getElementById('chartServices'), {
+    type: 'doughnut',
+    data: { labels: servicesLabels, datasets: [{ data: servicesCounts, backgroundColor: generatePalette(servicesLabels.length) }] },
+    options: { 
+      plugins:{
+        legend:{position:'bottom'},
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              const label = context.label || '';
+              const value = context.parsed || 0;
+              const pct = servicesTotal > 0 ? ((value / servicesTotal) * 100).toFixed(1) : 0;
+              return label + ': ' + value + ' (' + pct + '%)';
+            }
+          }
+        },
+        datalabels: {
+          formatter: (value) => {
+            const pct = servicesTotal > 0 ? ((value / servicesTotal) * 100).toFixed(1) : 0;
+            return pct + '%';
+          },
+          color: '#fff', font: { weight: 'bold', size: 12 }
+        }
+      }, 
+      onClick: (evt, elems) => handleDonutClick(evt, elems, 'Services') 
+    },
+    plugins: [ChartDataLabels]
+  });
+
+  // PIC COE chart - exclude invalid
+  const picGroups = groupByFiltered(data, d => d.PIC);
+  const picLabels = Object.keys(picGroups);
+  const picCounts = picLabels.map(l=>picGroups[l].length);
+  const picTotal = picCounts.reduce((a,b)=>a+b, 0);
+
+  destroyChart('chartPIC');
+  charts.chartPIC = new Chart(document.getElementById('chartPIC'), {
+    type: 'doughnut',
+    data: { labels: picLabels, datasets: [{ data: picCounts, backgroundColor: generatePalette(picLabels.length) }] },
+    options: { 
+      plugins:{
+        legend:{position:'bottom'},
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              const label = context.label || '';
+              const value = context.parsed || 0;
+              const percentage = picTotal > 0 ? ((value / picTotal) * 100).toFixed(1) : 0;
+              return label + ': ' + value + ' (' + percentage + '%)';
+            }
+          }
+        },
+        datalabels: {
+          formatter: (value) => {
+            const percentage = picTotal > 0 ? ((value / picTotal) * 100).toFixed(1) : 0;
+            return percentage + '%';
+          },
+          color: '#fff', font: { weight: 'bold', size: 12 }
+        }
+      }, 
+      onClick: (evt, elems) => handleDonutClick(evt, elems, 'PIC') 
+    },
+    plugins: [ChartDataLabels]
+  });
+  
+  // chartAM – tampilkan hanya project dengan 3A Scanning = "Relate", termasuk yang belum punya PIC COE
+const relateData = data.filter(d => String(d.Scanning3A).trim().toLowerCase() === 'relate');
+
+// Ganti PIC kosong/null jadi label default
+const amGroups = groupByFiltered(relateData.map(d => ({
+  ...d,
+  PIC: d.PIC && d.PIC.trim() !== '' ? d.PIC : '(Belum Ditentukan)'
+})), d => d.PIC);
+
+const amLabels = Object.keys(amGroups).sort((a,b)=>amGroups[b].length - amGroups[a].length).slice(0,12);
+const amProjectCounts = amLabels.map(l=>amGroups[l].length);
+const amNilai = amLabels.map(l=>sum(amGroups[l],'NilaiKontrak'));
+const amScaling = amLabels.map(l=>sum(amGroups[l],'PotensiRevenue3A'));
+
+destroyChart('chartAM');
+charts.chartAM = new Chart(document.getElementById('chartAM'), {
+  type: 'bar',
+  data: {
+    labels: amLabels,
+    datasets: [
+      { label:'Jumlah Project', data: amProjectCounts, yAxisID:'y1', backgroundColor:'#60a5fa' },
+      { label:'Nilai Kontrak', data: amNilai, yAxisID:'y2', backgroundColor:'#10b981' },
+      { label:'Potensi Revenue 3A', data: amScaling, yAxisID:'y2', backgroundColor:'#f59e0b' }
+    ]
+  },
+  options: {
+    indexAxis:'x',
+    responsive:true,
+    plugins:{ legend:{ position:'bottom' } },
+    scales:{
+      y1:{ type:'linear', position:'left', beginAtZero:true, title:{ display:true, text:'Jumlah Project' } },
+      y2:{ type:'linear', position:'right', beginAtZero:true, grid:{ drawOnChartArea:false }, 
+           ticks:{ callback:v=>abbrevIDR(v) }, title:{ display:true, text:'Nilai (IDR)' } }
+    }
+  }
+});
+
+
+  // Industry chart - exclude invalid
+  const industryGroups = groupByFiltered(data, d=>d.Industry);
+  let industryArr = Object.keys(industryGroups).map(l => ({
+    label: l, nilai: sum(industryGroups[l], 'NilaiKontrak'), project: industryGroups[l].length
+  }));
+  industryArr.sort((a,b) => b.nilai - a.nilai);
+  const industryLabels = industryArr.map(d=>d.label);
+  const industryNilai = industryArr.map(d=>d.nilai);
+  const industryProjects = industryArr.map(d=>d.project);
+
+  destroyChart('chartIndustry');
+  charts.chartIndustry = new Chart(document.getElementById('chartIndustry'), {
+    type:'bar',
+    data:{
+      labels:industryLabels,
+      datasets:[
+        { label:'Total Nilai Kontrak', data:industryNilai, yAxisID:'y1', backgroundColor:'#1f77b4' },
+        { label:'Total Project', data:industryProjects, yAxisID:'y2', backgroundColor:'#ff7f0e' }
+      ]
+    },
+    options:{
+      responsive:true, plugins:{ legend:{ position:'bottom' } },
+      scales:{
+        y1:{ beginAtZero:true, position:'left', ticks:{ callback:v=>abbrevIDR(v) }, title:{display:true,text:'Nilai Kontrak'} },
+        y2:{ beginAtZero:true, position:'right', grid:{drawOnChartArea:false}, title:{display:true,text:'Jumlah Project'} }
+      }
+    }
+  });
+
+  // Segment Sales chart - exclude invalid
+  const salesGroups = groupByFiltered(data, d=>d.SegmentSales);
+  let salesArr = Object.keys(salesGroups).map(l => ({
+    label: l, nilai: sum(salesGroups[l],'NilaiKontrak'), project: salesGroups[l].length
+  }));
+  salesArr.sort((a,b) => b.nilai - a.nilai);
+  const salesLabels = salesArr.map(d=>d.label);
+  const salesNilai = salesArr.map(d=>d.nilai);
+  const salesProjects = salesArr.map(d=>d.project);
+
+  destroyChart('chartIndustrySales');
+  charts.chartIndustrySales = new Chart(document.getElementById('chartIndustrySales'), {
+    type:'bar',
+    data:{
+      labels:salesLabels,
+      datasets:[
+        { label:'Total Nilai Kontrak', data:salesNilai, yAxisID:'y1', backgroundColor:'#2ca02c' },
+        { label:'Total Project', data:salesProjects, yAxisID:'y2', backgroundColor:'#d62728' }
+      ]
+    },
+    options:{
+      responsive:true, plugins:{ legend:{ position:'bottom' } },
+      scales:{
+        y1:{ beginAtZero:true, position:'left', ticks:{ callback:v=>abbrevIDR(v) }, title:{display:true,text:'Nilai Kontrak'} },
+        y2:{ beginAtZero:true, position:'right', grid:{drawOnChartArea:false}, title:{display:true,text:'Jumlah Project'} }
+      }
+    }
+  });
+
+  renderFunnelAndServices(data); // this will now populate the table
+  renderFunnelBoard(data); // Call the new Funnel Board rendering function
+  // ensure chartScanning always shows total NilaiKontrak across ALL data (unfiltered)
+  renderChartScanningAll(parsed);
+}
+
+function initFilters(data){
+  // build sets excluding invalid/unknown
+  const funnels = Array.from(new Set(data.map(d=>d.Funnel).filter(isValidValue))).sort();
+  const segs = Array.from(new Set(data.map(d=>d.SegmentSales).filter(isValidValue))).sort();
+  const ams = Array.from(new Set(data.map(d=>d.NamaAM).filter(isValidValue))).sort();
+  // Filter 3A Scanning akan terisi otomatis dengan nilai unik (termasuk Relate, Not Align, Not Relate jika ada di data)
+  const scans = Array.from(new Set(data.map(d=>d.Scanning3A).filter(isValidValue))).sort();
+  const pics = Array.from(new Set(data.map(d=>d.PIC).filter(isValidValue))).sort();
+
+  buildCheckboxFilter('filterFunnel', 'btnFunnel', 'badgeFunnel', funnels, 'funnel');
+  buildCheckboxFilter('filterSegmentSales', 'btnSegmentSales', 'badgeSegmentSales', segs, 'segmentSales');
+  buildCheckboxFilter('filterAM', 'btnAM', 'badgeAM', ams, 'am');
+  buildCheckboxFilter('filterScanning', 'btnScanning', 'badgeScanning', scans, 'scanning');
+  buildCheckboxFilter('filterPIC', 'btnPIC', 'badgePIC', pics, 'pic');
+
+  document.getElementById('resetBtn').addEventListener('click', resetAllFilters);
+  
+  // New: Event listener for Funnel Board Sort dropdown
+  const sortRevenueDropdown = document.getElementById('sortRevenue');
+  if (sortRevenueDropdown) {
+    sortRevenueDropdown.addEventListener('change', applyFilters);
+  }
+}
+
+function safeId(s){
+  return String(s).replace(/[^\w\-]/g,'_');
+}
+
+function buildCheckboxFilter(containerId, buttonId, badgeId, items, filterKey) {
+  const container = document.getElementById(containerId);
+  const button = document.getElementById(buttonId);
+  const badge = document.getElementById(badgeId);
+
+  container.innerHTML = '';
+  
+  items.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'filter-item';
+    
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.value = item;
+    checkbox.id = `${filterKey}_${safeId(item)}`;
+    
+    checkbox.addEventListener('change', function() {
+      if (this.checked) {
+        if (!selectedFilters[filterKey].includes(item)) selectedFilters[filterKey].push(item);
+      } else {
+        selectedFilters[filterKey] = selectedFilters[filterKey].filter(v => v !== item);
+      }
+      updateFilterBadge(badgeId, selectedFilters[filterKey].length);
+      applyFilters();
+    });
+    
+    const label = document.createElement('label');
+    label.htmlFor = checkbox.id;
+    label.textContent = item;
+    label.style.cursor = 'pointer';
+    label.style.flex = '1';
+    
+    div.appendChild(checkbox);
+    div.appendChild(label);
+    container.appendChild(div);
+  });
+
+  button.addEventListener('click', function(e) {
+    e.stopPropagation();
+    closeAllDropdowns();
+    container.classList.toggle('show');
+  });
+}
+
+function closeAllDropdowns() {
+  document.querySelectorAll('.filter-content').forEach(el => el.classList.remove('show'));
+}
+
+function updateFilterBadge(badgeId, count) {
+  const badge = document.getElementById(badgeId);
+  badge.textContent = count;
+  badge.style.backgroundColor = count > 0 ? '#3b82f6' : '#94a3b8';
+}
+
+function resetAllFilters() {
+  selectedFilters = { funnel: [], segmentSales: [], am: [], scanning: [], pic: [] };
+  document.querySelectorAll('.filter-content input[type="checkbox"]').forEach(cb => cb.checked = false);
+  updateFilterBadge('badgeFunnel', 0);
+  updateFilterBadge('badgeSegmentSales', 0);
+  updateFilterBadge('badgeAM', 0);
+  updateFilterBadge('badgeScanning', 0);
+  updateFilterBadge('badgePIC', 0);
+  // Reset Funnel Board sort to default
+  document.getElementById('sortRevenue').value = 'none';
+  applyFilters();
+}
+
+function applyFilters(){
+  let filtered = parsed.slice();
+  
+  if (selectedFilters.funnel.length > 0) filtered = filtered.filter(d => selectedFilters.funnel.includes(d.Funnel));
+  if (selectedFilters.segmentSales.length > 0) filtered = filtered.filter(d => selectedFilters.segmentSales.includes(d.SegmentSales));
+  if (selectedFilters.am.length > 0) filtered = filtered.filter(d => selectedFilters.am.includes(d.NamaAM));
+  if (selectedFilters.scanning.length > 0) filtered = filtered.filter(d => selectedFilters.scanning.includes(d.Scanning3A));
+  if (selectedFilters.pic.length > 0) filtered = filtered.filter(d => selectedFilters.pic.includes(d.PIC));
+
+  // ensure we do not include projects with unknown values in charts (table can still show items if valid)
+  renderTable(filtered);
+  renderCharts(filtered);
+  // Panggil fungsi Funnel Board yang baru
+  renderFunnelBoard(filtered);
+}
+
+function handleDonutClick(evt, elems, type){
+  if (!elems || elems.length === 0) return;
+  const idx = elems[0].index;
+  let label;
+  if (type === 'Services') label = charts.chartServices.data.labels[idx];
+  if (type === 'SubServices') label = charts.chartSubServices.data.labels[idx];
+  if (type === 'PIC') label = charts.chartPIC.data.labels[idx];
+  if (!label) return;
+
+  if (type === 'PIC'){
+    const checkbox = document.getElementById(`pic_${safeId(label)}`);
+    if (checkbox) {
+      checkbox.checked = true;
+      if (!selectedFilters.pic.includes(label)) selectedFilters.pic.push(label);
+      updateFilterBadge('badgePIC', selectedFilters.pic.length);
+    }
+  } else if (type === 'SubServices'){
+    const checkbox = document.getElementById(`scanning_${safeId(label)}`);
+    // SubServices clicks map to scanning filter? In original, clicking SubServices used scanning filter; keep behavior minimal: try to find in scanning filters
+    if (checkbox) {
+      checkbox.checked = true;
+      if (!selectedFilters.scanning.includes(label)) selectedFilters.scanning.push(label);
+      updateFilterBadge('badgeScanning', selectedFilters.scanning.length);
+    }
+  } else {
+    // Services clicked -> attempt to apply scanning filter? keep consistent with previous minimal behavior:
+    const checkbox = document.getElementById(`scanning_${safeId(label)}`);
+    if (checkbox) {
+      checkbox.checked = true;
+      if (!selectedFilters.scanning.includes(label)) selectedFilters.scanning.push(label);
+      updateFilterBadge('badgeScanning', selectedFilters.scanning.length);
+    }
+  }
+  applyFilters();
+}
+
+function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function generatePalette(n){
+  const base = ["#60a5fa","#34d399","#f97316","#fb7185","#a78bfa","#f59e0b","#06b6d4","#ef4444","#10b981","#7c3aed"];
+  const out = [];
+  for(let i=0;i<n;i++) out.push(base[i % base.length]);
+  return out;
+}
+
+function abbrevIDR(v){
+  if (v >= 1e12) return 'Rp ' + (v/1e12).toFixed(1) + ' T';
+  if (v >= 1e9) return 'Rp ' + (v/1e9).toFixed(1) + ' B';
+  if (v >= 1e6) return 'Rp ' + (v/1e6).toFixed(1) + ' M';
+  if (v >= 1e3) return 'Rp ' + (v/1e3).toFixed(1) + ' K';
+  return 'Rp ' + v;
+}
+
+/* NEW: Funnel Board Logic (Modified for Fixed Tooltip) */
+const FUNNEL_STAGES = ['Prospect', 'Qualified', 'Solutioning', 'Proofing', 'Submission', 'Win'];
+const STAGE_COLORS = {
+    'Prospect': 'prospect',
+    'Qualified': 'discovery',
+    'Solutioning': 'solutioning',
+    'Proofing': 'proofing',
+    'Submission': 'dealing', 
+    'Win': 'win'
+};
+
+/* NEW: Function to display the fixed tooltip */
+function showCardTooltip(cardElement, details, title) {
+    const tooltip = document.getElementById('globalCardTooltip');
+    const rect = cardElement.getBoundingClientRect();
+    
+    let tooltipHtml = `<p class="text-sm font-bold mb-2 pb-1 text-slate-700 border-b">${title}</p>`;
+    
+    details.forEach(item => {
+        const value = isValidValue(item.value) ? escapeHtml(item.value) : '-'; 
+        tooltipHtml += `<div class="text-xs mb-1 leading-tight"><span class="font-semibold text-slate-600">${item.label}:</span> <span class="text-slate-800">${value}</span></div>`;
+    });
+    
+    tooltip.innerHTML = tooltipHtml;
+    
+    // Positioning logic
+    const topPos = rect.top; // Use rect.top for fixed positioning
+    const leftPosRight = rect.right + 10;
+    
+    const tooltipWidth = 300; // Hardcoded from CSS
+    
+    // Check if clipping on the right edge.
+    if (leftPosRight + tooltipWidth > window.innerWidth) {
+        // Position to the left of the card
+        tooltip.style.left = `${rect.left - tooltipWidth - 10}px`;
+    } else {
+        // Position to the right
+        tooltip.style.left = `${leftPosRight}px`;
+    }
+    
+    // Adjust top position to prevent clipping at the bottom of the viewport
+    let finalTop = topPos;
+    if (topPos + tooltip.offsetHeight > window.innerHeight) {
+        // Shift up so the bottom aligns with the viewport bottom (or just slightly above)
+        finalTop = window.innerHeight - tooltip.offsetHeight - 10;
+        finalTop = Math.max(10, finalTop); // Ensure it doesn't go above the top edge
+    }
+    
+    tooltip.style.top = `${finalTop}px`;
+    tooltip.classList.add('show');
+}
+
+/* NEW: Function to hide the fixed tooltip */
+function hideCardTooltip() {
+    document.getElementById('globalCardTooltip').classList.remove('show');
+}
+
+
+function renderFunnelBoard(data) {
+    const container = document.getElementById('funnelBoardContainer');
+    container.innerHTML = '';
+    
+    // 1. Filter: only include projects with a valid LastUpdate date
+    let filteredData = data.filter(d => d.LastUpdate instanceof Date);
+    
+    // 2. Primary Sort: Last Update (Nearest to Today)
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    filteredData.sort((a, b) => {
+        const diffA = Math.abs(today - a.LastUpdate);
+        const diffB = Math.abs(today - b.LastUpdate);
+        return diffA - diffB; // Nearest date (smallest difference) is first
+    });
+
+    // 3. Group by stage *after* date sorting
+    const projectsByStage = groupByFiltered(filteredData, d => d.Funnel3A);
+    
+    const sortBy = document.getElementById('sortRevenue').value;
+    
+    FUNNEL_STAGES.forEach(stage => {
+        const stageData = projectsByStage[stage] || [];
+        
+        // Salin dan Sort data. Urutan Last Update adalah default, Revenue adalah override.
+        let sortedStageData = stageData.slice();
+        
+        // Apply existing revenue sort as secondary sort (overrides date sort if not 'none')
+        if (sortBy === 'descending') {
+            sortedStageData.sort((a, b) => (b.PotensiRevenueProject || 0) - (a.PotensiRevenueProject || 0));
+        } else if (sortBy === 'ascending') {
+            sortedStageData.sort((a, b) => (a.PotensiRevenueProject || 0) - (b.PotensiRevenueProject || 0));
+        }
+        
+        const column = document.createElement('div');
+        column.className = 'funnel-stage-column';
+        
+        // Header (dengan Total Revenue)
+        const totalRevenueStage = sum(stageData, 'PotensiRevenueProject');
+        const header = document.createElement('div');
+        header.className = `stage-header ${STAGE_COLORS[stage] || 'discovery'}`; // default to discovery color if stage not in map
+        header.innerHTML = `${stage} (${sortedStageData.length}) <span class="text-xs font-normal text-slate-600 ml-1">| ${abbrevIDR(totalRevenueStage)}</span>`;
+        column.appendChild(header);
+        
+        // Card List
+        const cardList = document.createElement('div');
+        cardList.className = 'stage-card-list';
+        
+        if (sortedStageData.length === 0) {
+            cardList.innerHTML = '<div class="text-xs text-slate-400 p-4 text-center">Tidak ada proyek</div>';
+        } else {
+            // Tampilkan Top 10 kartu di setiap stage
+            const displayData = sortedStageData.slice(0, 10); 
+
+            displayData.forEach(project => {
+                const card = document.createElement('div');
+                card.className = 'project-card';
+                
+                const revenueText = project.PotensiRevenueProject > 0 ? abbrevIDR(project.PotensiRevenueProject) : 'N/A';
+                const lastUpdateText = project.LastUpdate instanceof Date ? project.LastUpdate.toLocaleDateString('id-ID', {day: '2-digit', month: '2-digit', year: 'numeric'}) : 'Tgl N/A';
+                
+                // NEW: Prepare Tooltip Data (Stored in data attributes)
+                const details = [
+                    { label: 'PIC', value: project.PIC },
+                    { label: 'Customer', value: project.Customer },
+                    { label: 'Segment Sales', value: project.SegmentSales },
+                    { label: '3A Services', value: project.Services },
+                    { label: 'Sub Services', value: project.SubServices },
+                    { label: 'Keterangan Tambahan', value: project.KeteranganTambahan },
+                    { label: 'BAK', value: project.BAK },
+                    { label: 'Kickoff', value: project.Kickoff },
+                    { label: 'BRD', value: project.BRD },
+                    { label: 'PDD', value: project.PDD },
+                    { label: 'Development', value: project.Development },
+                    { label: 'Live', value: project.Live }
+                ];
+                
+                card.dataset.projectTitle = escapeHtml(project.NamaProject || 'Proyek Tanpa Nama');
+                // Store the raw details data on the card element, need to stringify
+                card.dataset.tooltipDetails = JSON.stringify(details);
+
+                // Add event listeners for the fixed tooltip approach
+                card.addEventListener('mouseover', function() {
+                    showCardTooltip(this, JSON.parse(this.dataset.tooltipDetails), this.dataset.projectTitle);
+                });
+                card.addEventListener('mouseleave', hideCardTooltip);
+                
+                // Card HTML (without nested tooltip)
+                card.innerHTML = `
+                     <p class="text-sm font-semibold text-slate-800 mb-1 leading-snug">
+        ${escapeHtml(project.NamaProject || 'Proyek Tanpa Nama')}
+    </p>
+    <p class="text-xs font-bold mb-1">
+        <span class="text-slate-500">Pot. Revenue:</span>
+        <span class="text-blue-600 numeric">${revenueText}</span>
+    </p>
+    <p class="text-xs text-slate-400 mt-1 italic">
+        Update: ${lastUpdateText}
+    </p>
+                `;
+                cardList.appendChild(card);
+            });
+            
+            // Tambahkan footer jika ada proyek lebih dari 10
+            if (sortedStageData.length > 10) {
+                const footer = document.createElement('div');
+                footer.className = 'text-xs text-center text-slate-500 pt-2 pb-1 border-t mt-1';
+                footer.textContent = `+ ${sortedStageData.length - 10} proyek lainnya...`;
+                cardList.appendChild(footer);
+            }
+        }
+        
+        column.appendChild(cardList);
+        container.appendChild(column);
+    });
+}
+/* END NEW: Funnel Board Logic */
+
+/* NEW: render single combined table for Detail Nama Layanan per Stage */
+function renderFunnelAndServices(data){
+  const stagesOrder = ['Prospect','Qualified','Submission','WIN', 'Drop'];
+  // build rows: only include projects that have a valid Funnel3A (stage) and have a project name
+  const rows = [];
+  data.forEach(d => {
+    const stageRaw = d.Funnel3A || '';
+    if (!isValidValue(stageRaw)) return; // skip invalid/unknown stage
+    const stage = String(stageRaw).trim();
+    if (!stagesOrder.includes(stage)) {
+      // optionally include unknown stage values? per request, remove Unknown -> skip anything not in stagesOrder
+      return;
+    }
+    const proj = (d.NamaProject && String(d.NamaProject).trim()) ? String(d.NamaProject).trim() : '';
+    if (!proj) return;
+    // Services: only include allowed values
+    let servicesVal = '';
+    if (isValidValue(d.Services)){
+      const s = String(d.Services).trim();
+      // if the field contains multiple, extract allowed ones (comma separated)
+      const found = ALLOWED_SERVICES.filter(a => s.toLowerCase().includes(a.toLowerCase()));
+      servicesVal = found.join(', ');
+    }
+    const subVal = isValidValue(d.SubServices) ? String(d.SubServices).trim() : '';
+    // only include row if servicesVal is in allowed list OR empty? The requirement: "3A Services (ambil di field “3A Services” dengan Value hanya ini ... )"
+    // So include the row but display 3A Services only if matching allowed list. We will still show project even if services empty.
+    rows.push({ stage, proj, servicesVal, subVal });
+  });
+
+  // sort by stage order then project name
+  rows.sort((a,b) => {
+    const si = stagesOrder.indexOf(a.stage);
+    const sj = stagesOrder.indexOf(b.stage);
+    if (si !== sj) return si - sj;
+    return a.proj.localeCompare(b.proj);
+  });
+
+  const tbody = document.querySelector('#stageCombinedTable tbody');
+  tbody.innerHTML = '';
+  if (rows.length === 0){
+    const tr = document.createElement('tr');
+    const td = document.createElement('td');
+    td.colSpan = 4;
+    td.className = 'text-slate-400 p-4';
+    td.textContent = '- (tidak ada data)';
+    tr.appendChild(td);
+    tbody.appendChild(tr);
+    return;
+  }
+
+  rows.forEach(r => {
+    const tr = document.createElement('tr');
+    const tdStage = document.createElement('td'); tdStage.innerText = r.stage;
+    const tdProj = document.createElement('td'); tdProj.innerText = r.proj;
+    const tdServ = document.createElement('td'); tdServ.innerText = r.servicesVal || '-';
+    const tdSub = document.createElement('td'); tdSub.innerText = r.subVal || '-';
+    tr.appendChild(tdStage); tr.appendChild(tdProj); tr.appendChild(tdServ); tr.appendChild(tdSub);
+    tbody.appendChild(tr);
+  });
+}
+
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.filter-dropdown')) closeAllDropdowns();
+});
+
+async function init(){
+  try{
+    rawData = await loadCSV();
+    parsed = normalizeData(rawData);
+    initFilters(parsed);
+    renderTable(parsed);
+    renderCharts(parsed);
+    // Panggil fungsi Funnel Board saat inisialisasi
+    renderFunnelBoard(parsed); 
+  } catch(err){
+    console.error('Failed to load data',err);
+    document.body.insertAdjacentHTML('afterbegin', '<div class="p-4 m-4 rounded bg-red-50 border border-red-100 text-red-700">Check API KEY NYA YA".</div>');
+  }
+}
+
+if (sessionStorage.getItem('isLoggedIn') === 'true') init();
+
+/* ====== MODIFIKASI: Chart Scanning yang TIDAK TERFILTER dan menampilkan Nilai Kontrak (doughnut) ====== */
+
+function renderChartScanningAll(allData) {
+  // group by Scanning3A and sum NilaiKontrak - excluding invalid labels
+  const scanGroupsAll = groupByFiltered(allData, d => d.Scanning3A);
+  const scanLabelsAll = Object.keys(scanGroupsAll);
+  const scanNilaiAll = scanLabelsAll.map(l => sum(scanGroupsAll[l], 'NilaiKontrak'));
+  const totalNilai = scanNilaiAll.reduce((a,b)=>a+b,0);
+
+  destroyChart('chartScanning');
+  charts.chartScanning = new Chart(document.getElementById('chartScanning'), {
+    type: 'doughnut',
+    data: {
+      labels: scanLabelsAll,
+      datasets: [{
+        data: scanNilaiAll,
+        backgroundColor: generatePalette(scanLabelsAll.length)
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'bottom' },
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              const label = context.label || '';
+              const value = context.parsed || 0;
+              const pct = totalNilai > 0 ? ((value / totalNilai) * 100).toFixed(1) : 0;
+              return label + ': ' + fmtIDR(value) + ' (' + pct + '%)';
+            }
+          }
+        },
+        datalabels: {
+          formatter: function(value) {
+            // show percentage of total NilaiKontrak
+            const pct = totalNilai > 0 ? ((value / totalNilai) * 100).toFixed(1) : 0;
+            return pct + '%';
+          },
+          color: '#fff',
+          font: { weight: 'bold', size: 12 }
+        }
+      }
+    },
+    plugins: [ChartDataLabels]
+  });
+}
+
+/* ======================================================================================= */
+</script>
+</body>
+</html>

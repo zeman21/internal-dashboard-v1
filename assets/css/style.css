@@ -1,0 +1,331 @@
+ /* ------------------------------------------- */
+    /* UPDATED: Loading Overlay and Placeholder Styles */
+    /* ------------------------------------------- */
+    /* Menghapus @keyframes spin dan .spinner lama */
+
+    #loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      /* Latar belakang putih transparan */
+      background-color: rgba(255, 255, 255, 0.95); 
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      visibility: hidden; /* Mulai tersembunyi */
+      opacity: 0;
+      transition: opacity 0.3s, visibility 0.3s;
+    }
+
+    #loading-overlay.visible {
+      visibility: visible;
+      opacity: 1;
+    }
+    
+    .chat-widget-container {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
+        width: 350px;
+        height: 500px;
+        max-width: 90vw;
+        max-height: 80vh;
+        display: flex;
+        flex-direction: column;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        transform: scale(0);
+        transform-origin: bottom right;
+    }
+
+    .chat-widget-container.active {
+        transform: scale(1);
+    }
+
+    .chat-widget-header {
+        background-color: #4a90e2;
+        color: #fff;
+        padding: 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        user-select: none;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+    }
+
+    .chat-widget-header h3 {
+        margin: 0;
+        font-size: 1.2em;
+    }
+
+    .chat-widget-toggle-btn {
+        background-color: #3b7cbf;
+        color: #fff;
+        border: none;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        font-size: 24px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1001;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .chat-widget-toggle-btn.active {
+        transform: rotate(45deg);
+        background-color: #d9534f;
+    }
+
+    .chat-widget-iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+
+    @media (max-width: 768px) {
+        .chat-widget-container {
+            width: 100%;
+            height: 100%;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            border-radius: 0;
+            max-width: none;
+            max-height: none;
+            transition: transform 0.3s ease-in-out;
+            transform: scale(0);
+            transform-origin: top left;
+        }
+
+        .chat-widget-container.active {
+            transform: scale(1);
+        }
+    }
+
+    #loginPage {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    #dashboardPage {
+      display: none;
+    }
+
+    .filter-dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .filter-button {
+      padding: 0.5rem 1rem;
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.375rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+      transition: all 0.2s;
+    }
+
+    .filter-button:hover {
+      background: #f8fafc;
+      border-color: #cbd5e1;
+    }
+
+    .filter-content {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      margin-top: 0.5rem;
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.5rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      z-index: 100;
+      min-width: 200px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .filter-content.show {
+      display: block;
+    }
+
+    .filter-item {
+      padding: 0.5rem 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .filter-item:hover {
+      background: #f1f5f9;
+    }
+
+    .filter-item input[type="checkbox"] {
+      cursor: pointer;
+      width: 16px;
+      height: 16px;
+    }
+
+    .filter-badge {
+      background: #3b82f6;
+      color: white;
+      padding: 0.125rem 0.5rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-left: 0.25rem;
+    }
+
+    /* new: table inside Detail Nama Layanan per Stage card */
+    .stage-table-wrapper {
+      max-height: 420px;
+      overflow-y: auto;
+      border-radius: 8px;
+      border: 1px solid #e6eef8;
+    }
+    .stage-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .stage-table th, .stage-table td {
+      padding: 8px 10px;
+      border-bottom: 1px solid #f1f5f9;
+      text-align: left;
+      font-size: 13px;
+    }
+    .stage-table thead th {
+      position: sticky;
+      top: 0;
+      background: white;
+      z-index: 5;
+      font-weight: 700;
+      border-bottom: 2px solid #e6eef8;
+    }
+
+    /* --- FUNNEL BOARD Styling (Kanban) --- */
+    #funnelBoardContainer {
+        display: flex;
+        gap: 12px;
+        padding: 12px;
+        background: #f8fafc;
+        border-radius: 1rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        min-height: 850px; 
+        overflow-x: auto; 
+    }
+
+    .funnel-stage-column {
+        flex-shrink: 0;
+        width: 220px; 
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .stage-header {
+        padding: 12px;
+        font-size: 1rem;
+        font-weight: 700;
+        color: #334155;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        line-height: 1.2;
+    }
+
+    /* Warna Header per Stage (Match Gambar) */
+    .stage-header.prospect { background-color: #fce7f3; }
+    .stage-header.discovery { background-color: #e0f2fe; }
+    .stage-header.solutioning { background-color: #fef9c3; }
+    .stage-header.proofing { background-color: #d1fae5; }
+    .stage-header.dealing { background-color: #ede9fe; }
+    .stage-header.win { background-color: #e0f2f7; }
+
+    .stage-card-list {
+        flex-grow: 1;
+        min-height: 100px;
+        padding: 8px;
+        overflow-y: auto; /* List card bisa di-scroll vertikal (Penyebab clipping tooltip) */
+        max-height: 1000px; 
+    }
+
+    /* .stage-card-list {
+        flex-grow: 1;
+        min-height: 100px;
+        padding: 8px;
+        overflow-y: auto; 
+        max-height: 1000px; */
+
+    .project-card {
+        background: white;
+        padding: 10px;
+        margin-bottom: 8px;
+        border-radius: 6px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+        border-left: 4px solid #3b82f6; 
+        position: relative; 
+        z-index: 10;
+        transition: box-shadow 0.2s ease;
+    }
+
+    .project-card:hover {
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); 
+    }
+
+    /* FIX: Tooltip Styling for Project Card (using fixed position) */
+    .card-tooltip {
+        position: fixed; /* Changed to fixed to escape overflow clipping */
+        width: 300px;
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        z-index: 1000; /* Super high z-index */
+        pointer-events: none;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.2s, visibility 0.2s;
+        transform: translateZ(0); /* Hardware acceleration */
+    }
+    .card-tooltip.show {
+        opacity: 1;
+        visibility: visible;
+    }
+    /* --- Akhir FIX FUNNEL BOARD Styling --- */
+
+    /* keep small screens friendly */
+    @media (max-width: 768px){
+      .stage-table th, .stage-table td { font-size: 12px; padding: 6px 8px; }
+      #funnelBoardContainer { overflow-x: scroll; } 
+    }
