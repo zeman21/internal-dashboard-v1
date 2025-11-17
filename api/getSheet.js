@@ -24,6 +24,12 @@ module.exports = async function handler(req, res) {
   const API_KEY = process.env.API_KEY ? process.env.API_KEY.trim() : '';
   const SHEET_ID = process.env.SHEET_ID ? process.env.SHEET_ID.trim() : '';
 
+  console.log(`[DEBUG] API_KEY exists: ${!!process.env.API_KEY}`);
+  console.log(`[DEBUG] API_KEY trimmed length: ${API_KEY.length}`);
+  console.log(`[DEBUG] API_KEY starts with: ${API_KEY.substring(0, 10)}...`);
+  console.log(`[DEBUG] SHEET_ID exists: ${!!process.env.SHEET_ID}`);
+  console.log(`[DEBUG] SHEET_ID: ${SHEET_ID}`);
+
   if (!API_KEY || !SHEET_ID) {
     console.error('Missing env vars:', { 
       hasApiKey: !!process.env.API_KEY, 
@@ -34,7 +40,9 @@ module.exports = async function handler(req, res) {
       message: 'Pastikan API_KEY dan SHEET_ID sudah di-set di environment variables Vercel',
       debug: {
         hasApiKey: !!process.env.API_KEY,
-        hasSheetId: !!process.env.SHEET_ID
+        hasSheetId: !!process.env.SHEET_ID,
+        apiKeyLength: API_KEY.length,
+        sheetIdLength: SHEET_ID.length
       }
     });
   }
